@@ -9,22 +9,57 @@
 </head>
 
 <body>
-  <h1>Odin's Library</h1>
-  <table class="table">
-    <tr class="table__header">
-      <th>Title</th>
-      <th>Author</th>
-      <th>Pages</th>
-      <th>Read</th>
-    </tr>
-    <tr>
-      <td>Test</td>
-      <td>Test</td>
-      <td>123</td>
-      <td>Yes</td>
-    </tr>
-  </table>
-  </h1>
+
+  <div class="hero">
+    <div class="container">
+      <div class="hero__text">
+        <h1>Odin's Library</h1>
+        <button class="btn new-book">New Book</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <table class="library">
+
+    </table>
+  </div>
+
+  <dialog>
+    <p>Add a new book</p>
+    <form action="#" method="get" class="form">
+      <fieldset>
+        <div class="form-item">
+          <label for="newBookTitle">Title (required):</label>
+          <input type="text" id="newBookTitle" name="title" required>
+        </div>
+        <div class="form-item">
+          <label for="newBookAuthor">Author:</label>
+          <input type="text" id="newBookAuthor" name="author">
+        </div>
+        <div class="form-item">
+          <label for="newBookPages">Pages:</label>
+          <input type="text" id="newBookPages" name="pages">
+        </div>
+        <div class="form-item-radio">
+          <div>
+            <p>Read:</p>
+            <label for="newBookReadYes">
+              <input type="radio" id="newBookReadYes" name="read" value="yes" checked />
+              Yes</label>
+            <label for="newBookReadNo">
+              <input type="radio" id="newBookReadNo" name="read" value="no" />
+              No</label>
+          </div>
+        </div>
+      </fieldset>
+      <div class="form-buttons">
+        <button type="submit" class="btn submit-dialog">Add to Library</button>
+        <button class="btn close-dialog">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
   <script src="scripts/main.js"></script>
 </body>
 

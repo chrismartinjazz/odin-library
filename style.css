@@ -1,0 +1,146 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 1.3rem;
+  background-color: #F6EEE0;
+  color: black;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+.container {
+  width: 80%;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.hero {
+  padding: 100px 0;
+  background-color: #A45C40;
+  color: white;
+}
+
+.content {
+  padding: 50px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: none;
+  border-radius: 2em;
+  cursor: pointer;
+}
+
+.btn:hover,
+.btn:focus {
+  opacity: .75;
+}
+
+.btn.new-book {
+  color: black;
+  font-weight: 900;
+  background-color: #F6EEE0;
+  padding: .75em 2em;
+}
+
+.btn.remove-book {
+  color: white;
+  background-color: #F54D3D;
+  padding: .8em;
+}
+
+.btn.read-book {
+  color: white;
+  background-color: #C38370;
+  padding: .8em;
+}
+
+.btn.close-dialog {
+  font-weight: 800;
+  background-color: #F54D3D;
+  padding: .8em 2em;
+}
+
+.btn.submit-dialog {
+  font-weight: 800;
+  background-color: #F6EEE0;
+  padding: .8em 2em;
+}
+
+table {
+  max-width: 80%;
+  text-align: left;
+}
+
+th {
+  height: 2em;
+}
+
+th,
+td {
+  padding: 0.2em;
+  border-bottom: 1px solid #ccc;
+  word-wrap: break-word;
+  max-width: 300px;
+}
+
+/* Modal Dialog */
+
+::backdrop {
+  opacity: 1;
+}
+
+dialog {
+  width: 80%;
+  max-width: 800px;
+  border: none;
+  background-color: #F0A160;
+  border-radius: 0.4em;
+}
+
+fieldset {
+  border: none;
+  padding: 0 0 1em 0;
+}
+
+.form {
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+.form-item label {
+  margin-bottom: 0.5rem;
+}
+
+.form-item input {
+  width: 100%;
+  border: 1px solid #D6D9DC;
+  border-radius: 0.2em;
+  height: initial;
+  padding: 0.5em;
+  margin: 0.3em 0 1em 0;
+}
+
+.form-item-radio p {
+  margin: 0;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}

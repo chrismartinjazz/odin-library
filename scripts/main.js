@@ -1,108 +1,138 @@
-const maxInputLength = 80;
+class Library {
+  #books = []
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
-  this.info = function () {
+  addBook(book) {
+    this.#books.push(book);
+  }
+
+  removeBook(index) {
+    this.#books.splice(index, 1);
+  }
+
+  getBooks() {
+    return this.#books;
+  }
+}
+
+class Book {
+  static maxInputLength = 80;
+
+  constructor(title, author, pages, read) {
+    this.title = this.#limitStringLength(title, Book.maxInputLength);
+    this.author = this.#limitStringLength(author, Book.maxInputLength);
+    this.pages = isNaN(parseInt(pages)) ? "" : parseInt(pages);
+    this.read = read ? true : false;
+  }
+
+  getInfo() {
     return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? 'read' : 'not read yet'}.`;
-  };
-  this.toggleRead = function () {
+  }
+
+  toggleRead() {
     this.read ? this.read = false : this.read = true;
-  };
+  }
+
+  #limitStringLength(string, maxInputLength) {
+    return string.length > maxInputLength ? string.slice(0, maxInputLength) + "..." : string;
+  }
 }
 
-function addBookToLibrary(title, author, pages, read = false) {
-  const parsedTitle = title.length > maxInputLength ? title.slice(0, maxInputLength) + "..." : title;
-  const parsedAuthor = author.length > maxInputLength ? title.slice(0, maxInputLength) + "..." : title;
-  const parsedPages = isNaN(parseInt(pages)) ? "" : parseInt(pages);
-  const parsedRead = read ? true : false;
-  myLibrary.push(new Book(parsedTitle, parsedAuthor, parsedPages, parsedRead));
-}
-
-function removeBookFromLibrary(index) {
-  myLibrary.splice(index, 1);
-}
-
-function initializeMyLibrary() {
-  addBookToLibrary("Runes for Beginners", "Lisa Chamberlain", 136, true);
-  addBookToLibrary("All about Ravens", "Arvaaq Press", 16, true);
-  addBookToLibrary("Magnus Chase and the Hammer of Thor", "Rick Riordan", 496);
-}
-
-function displayBooks() {
-  const library = document.querySelector(".library");
-  library.innerHTML = `<tr class="library__header">
+class Display {
+  constructor(library) {
+    this.library = library;
+    this.libraryTable = document.querySelector(".library-table");
+    this.libraryTableHeaderHTML =
+      `<tr class="library-table__header">
         <th></th>
         <th>Title</th>
         <th>Author</th>
         <th>Pages</th>
         <th>Read</th>
         <th></th>
-      </tr>`;
+      </tr>`
 
-  myLibrary.forEach((book, index) => {
-    const row = library.insertRow(index + 1);
-    row.setAttribute('id', `myLibrary${index}`)
+    this.dialog = document.querySelector("dialog");
+    this.form = document.querySelector("form");
+
+    this.#initializeDialog();
+  }
+
+  displayBooks() {
+    this.libraryTable.innerHTML = this.libraryTableHeaderHTML;
+
+    this.library.getBooks().forEach((book, index) => {
+      this.#displayBookRow(book, index);
+    });
+  }
+
+  #displayBookRow(book, index) {
+    const row = this.libraryTable.insertRow(index + 1);
+    row.setAttribute('id', `books${index}`)
+
     const cellReadToggle = row.insertCell(0);
     cellReadToggle.innerHTML = `<button class="btn read-book" id = ${index}">Toggle Read</button>`;
     cellReadToggle.addEventListener("click", () => {
       book.toggleRead();
-      displayBooks();
+      this.displayBooks();
     });
-    const cellTitle = row.insertCell(1);
-    cellTitle.innerHTML = book.title;
-    const cellAuthor = row.insertCell(2);
-    cellAuthor.innerHTML = book.author;
-    const cellPages = row.insertCell(3);
-    cellPages.innerHTML = book.pages;
-    const cellRead = row.insertCell(4);
-    cellRead.innerHTML = book.read ? 'Yes' : 'No';
+
+    this.#displayBookCell(row, book.title, 1);
+    this.#displayBookCell(row, book.author, 2);
+    this.#displayBookCell(row, book.pages, 3);
+    this.#displayBookCell(row, book.read ? 'Yes' : 'No', 4);
+
     const cellRemove = row.insertCell(5);
     cellRemove.innerHTML = `<button class="btn remove-book" id="${index}">Remove</button>`;
     cellRemove.addEventListener("click", () => {
-      removeBookFromLibrary(index);
-      displayBooks();
+      this.library.removeBook(index);
+      this.displayBooks();
     });
-  });
+  }
+
+  #displayBookCell(row, text, position) {
+    const cell = row.insertCell(position);
+    cell.innerHTML = text;
+  }
+
+  #initializeDialog() {
+    this.#initializeOpenClose();
+    this.#initializeSubmitForm();
+  }
+
+  #initializeOpenClose() {
+    const newBookButton = document.querySelector(".new-book");
+    const closeButton = document.querySelector(".close-dialog");
+
+    newBookButton.addEventListener("click", () => {
+      this.dialog.showModal();
+    });
+
+    closeButton.addEventListener("click", () => {
+      this.dialog.close();
+    });
+  }
+
+  #initializeSubmitForm() {
+    this.form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const title = document.getElementById("newBookTitle").value;
+      const author = document.getElementById("newBookAuthor").value;
+      const pages = document.getElementById("newBookPages").value;
+      const read = document.querySelector('input[name="read"]:checked').value;
+
+      const newBook = new Book(title, author, pages, read === 'yes' ? true : false);
+      this.library.addBook(newBook);
+      this.dialog.close();
+      this.form.reset();
+      this.displayBooks();
+    });
+  }
 }
 
-function initializeDialog() {
-  const dialog = document.querySelector("dialog");
-  const newBookButton = document.querySelector(".new-book");
-  const closeButton = document.querySelector(".close-dialog");
-  const form = document.querySelector("form");
+const myLibrary = new Library()
+myLibrary.addBook(new Book("Runes for Beginners", "Lisa Chamberlain", 136, true));
+myLibrary.addBook(new Book("All about Ravens", "Arvaaq Press", 16, true));
+myLibrary.addBook(new Book("Magnus Chase and the Hammer of Thor", "Rick Riordan", 496));
 
-  // Open and close the dialog using buttons.
-  newBookButton.addEventListener("click", () => {
-    dialog.showModal();
-  });
-
-  closeButton.addEventListener("click", () => {
-    dialog.close();
-  });
-
-  // Add submitted form data to myLibrary
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const title = document.getElementById("newBookTitle").value;
-    const author = document.getElementById("newBookAuthor").value;
-    const pages = document.getElementById("newBookPages").value;
-    const read = document.querySelector('input[name="read"]:checked').value;
-
-    addBookToLibrary(title, author, pages, read === 'yes' ? true : false);
-
-    dialog.close();
-
-    form.reset();
-
-    displayBooks();
-  });
-}
-
-const myLibrary = [];
-initializeDialog();
-initializeMyLibrary();
-displayBooks();
+new Display(myLibrary).displayBooks();

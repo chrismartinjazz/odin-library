@@ -34,3 +34,12 @@ class MyClass {
   method3() { }
   //...
 }
+
+============================
+
+Returning to this to add form validation.
+
+- Make all fields required
+- Make the Title a max of 200 characters
+- Make the Author a max of 70 characters
+- Make the Pages be a number

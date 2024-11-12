@@ -27,19 +27,20 @@
 
   <dialog>
     <p>Add a new book</p>
-    <form action="#" method="get" class="form">
+    <form novalidate action="#" method="get" class="form">
       <fieldset>
         <div class="form-item">
           <label for="newBookTitle">Title (required):</label>
-          <input type="text" id="newBookTitle" name="title" required>
+          <input required type="text" id="newBookTitle" name="title" maxlength="200">
+          <span class="error" aria-live="polite"></span>
         </div>
         <div class="form-item">
           <label for="newBookAuthor">Author:</label>
-          <input type="text" id="newBookAuthor" name="author">
+          <input required type="text" id="newBookAuthor" name="author" maxlength="70">
         </div>
         <div class="form-item">
           <label for="newBookPages">Pages:</label>
-          <input type="text" id="newBookPages" name="pages">
+          <input required type="number" id="newBookPages" name="pages" min="1" max="100000">
         </div>
         <div class="form-item-radio">
           <div>
@@ -60,7 +61,7 @@
     </form>
   </dialog>
 
-  <script src="scripts/main.js"></script>
+  <script src="scripts/main.js" type="module"></script>
 </body>
 
 </html>

@@ -4,6 +4,8 @@
   box-sizing: border-box;
 }
 
+
+
 body {
   margin: 0;
   font-family: sans-serif;
@@ -143,4 +145,31 @@ fieldset {
   display: flex;
   justify-content: center;
   gap: 1em;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;}
+
+input:invalid {
+  border-color: red;
+  background-color: #F0A160;
+}
+
+input:focus:invalid {
+  outline: none;
+}
+
+.error {
+  width: 100%;
+  padding: 0;
+  font-size: 90%;
+  color: white;
+  background-color: red;
+  border-radius: 0 0 5px 5px;
+}
+
+.error.active {
+  padding: 0.3em;
 }

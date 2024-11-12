@@ -1,5 +1,7 @@
+import { formValidation } from "./formvalidation";
+
 class Library {
-  #books = []
+  #books = [];
 
   addBook(book) {
     this.#books.push(book);
@@ -25,15 +27,19 @@ class Book {
   }
 
   getInfo() {
-    return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read ? 'read' : 'not read yet'}.`;
+    return `${this.title} by ${this.author}, ${this.pages} pages, ${
+      this.read ? "read" : "not read yet"
+    }.`;
   }
 
   toggleRead() {
-    this.read ? this.read = false : this.read = true;
+    this.read ? (this.read = false) : (this.read = true);
   }
 
   #limitStringLength(string, maxInputLength) {
-    return string.length > maxInputLength ? string.slice(0, maxInputLength) + "..." : string;
+    return string.length > maxInputLength
+      ? string.slice(0, maxInputLength) + "..."
+      : string;
   }
 }
 
@@ -41,15 +47,14 @@ class Display {
   constructor(library) {
     this.library = library;
     this.libraryTable = document.querySelector(".library-table");
-    this.libraryTableHeaderHTML =
-      `<tr class="library-table__header">
+    this.libraryTableHeaderHTML = `<tr class="library-table__header">
         <th></th>
         <th>Title</th>
         <th>Author</th>
         <th>Pages</th>
         <th>Read</th>
         <th></th>
-      </tr>`
+      </tr>`;
 
     this.dialog = document.querySelector("dialog");
     this.form = document.querySelector("form");
@@ -67,7 +72,7 @@ class Display {
 
   #displayBookRow(book, index) {
     const row = this.libraryTable.insertRow(index + 1);
-    row.setAttribute('id', `books${index}`)
+    row.setAttribute("id", `books${index}`);
 
     const cellReadToggle = row.insertCell(0);
     cellReadToggle.innerHTML = `<button class="btn read-book" id = ${index}">Toggle Read</button>`;
@@ -79,7 +84,7 @@ class Display {
     this.#displayBookCell(row, book.title, 1);
     this.#displayBookCell(row, book.author, 2);
     this.#displayBookCell(row, book.pages, 3);
-    this.#displayBookCell(row, book.read ? 'Yes' : 'No', 4);
+    this.#displayBookCell(row, book.read ? "Yes" : "No", 4);
 
     const cellRemove = row.insertCell(5);
     cellRemove.innerHTML = `<button class="btn remove-book" id="${index}">Remove</button>`;
@@ -108,6 +113,7 @@ class Display {
     });
 
     closeButton.addEventListener("click", () => {
+      this.form.reset();
       this.dialog.close();
     });
   }
@@ -121,7 +127,12 @@ class Display {
       const pages = document.getElementById("newBookPages").value;
       const read = document.querySelector('input[name="read"]:checked').value;
 
-      const newBook = new Book(title, author, pages, read === 'yes' ? true : false);
+      const newBook = new Book(
+        title,
+        author,
+        pages,
+        read === "yes" ? true : false
+      );
       this.library.addBook(newBook);
       this.dialog.close();
       this.form.reset();
@@ -130,9 +141,13 @@ class Display {
   }
 }
 
-const myLibrary = new Library()
-myLibrary.addBook(new Book("Runes for Beginners", "Lisa Chamberlain", 136, true));
+const myLibrary = new Library();
+myLibrary.addBook(
+  new Book("Runes for Beginners", "Lisa Chamberlain", 136, true)
+);
 myLibrary.addBook(new Book("All about Ravens", "Arvaaq Press", 16, true));
-myLibrary.addBook(new Book("Magnus Chase and the Hammer of Thor", "Rick Riordan", 496));
+myLibrary.addBook(
+  new Book("Magnus Chase and the Hammer of Thor", "Rick Riordan", 496)
+);
 
 new Display(myLibrary).displayBooks();

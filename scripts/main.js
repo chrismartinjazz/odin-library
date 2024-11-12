@@ -1,5 +1,3 @@
-// import { formValidation } from "./formvalidation";
-
 class Library {
   #books = [];
 
@@ -111,25 +109,98 @@ class Display {
   }
 
   #initializeSubmitForm() {
+    const title = document.getElementById("newBookTitle");
+    const titleError = document.querySelector("#newBookTitle + span.error");
+    const author = document.getElementById("newBookAuthor");
+    const authorError = document.querySelector("#newBookAuthor + span.error");
+    const pages = document.getElementById("newBookPages");
+    const pagesError = document.querySelector("#newBookPages + span.error");
+    const read = document.querySelector('input[name="read"]:checked');
+
+    title.addEventListener("input", (event) => {
+      if (title.validity.valid) {
+        titleError.textContent = "";
+        titleError.className = "error";
+      } else {
+        this.showTextError(title, titleError, "Title");
+      }
+    });
+
+    author.addEventListener("input", (event) => {
+      if (author.validity.valid) {
+        authorError.textContent = "";
+        authorError.className = "error";
+      } else {
+        this.showTextError(
+          author,
+          authorError,
+          "Author",
+          "Only alphabetic and numeric characters allowed in author's name!"
+        );
+      }
+    });
+
+    pages.addEventListener("input", (event) => {
+      if (pages.validity.valid) {
+        pagesError.textContent = "";
+        pagesError.className = "error";
+      } else {
+        this.showTextError(
+          pages,
+          pagesError,
+          "Pages",
+          "Books in the library must have less than 10000 pages."
+        );
+      }
+    });
+
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
-
-      const title = document.getElementById("newBookTitle").value;
-      const author = document.getElementById("newBookAuthor").value;
-      const pages = document.getElementById("newBookPages").value;
-      const read = document.querySelector('input[name="read"]:checked').value;
+      if (!title.validity.valid) {
+        this.showTextError(title, titleError, "Title");
+        return;
+      }
+      if (!author.validity.valid) {
+        this.showTextError(
+          author,
+          authorError,
+          "Author",
+          "Only alphabetic and numeric characters allowed in author's name."
+        );
+        return;
+      }
+      if (!pages.validity.valid) {
+        this.showTextError(
+          pages,
+          pagesError,
+          "Pages",
+          "Books in the library must have less than 10000 pages."
+        );
+        return;
+      }
 
       const newBook = new Book(
-        title,
-        author,
-        pages,
-        read === "yes" ? true : false
+        title.value,
+        author.value,
+        pages.value,
+        read.value === "yes" ? true : false
       );
       this.library.addBook(newBook);
       this.dialog.close();
       this.form.reset();
       this.displayBooks();
     });
+  }
+
+  showTextError(textField, textError, fieldName, patternMismatchErrorString) {
+    if (textField.validity.valueMissing) {
+      textError.textContent = `${fieldName} is required.`;
+    } else if (textField.validity.tooShort) {
+      textError.textContent = `${fieldName} should be at least ${textField.minLength} characters - you entered ${textField.value.length}.`;
+    } else if (textField.validity.patternMismatch) {
+      textError.textContent = patternMismatchErrorString;
+    }
+    textError.className = "error active";
   }
 }
 

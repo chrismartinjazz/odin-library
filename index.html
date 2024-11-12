@@ -30,17 +30,25 @@
     <form novalidate action="#" method="get" class="form">
       <fieldset>
         <div class="form-item">
-          <label for="newBookTitle">Title (required):</label>
-          <input required type="text" id="newBookTitle" name="title" maxlength="200">
-          <span class="error" aria-live="polite"></span>
+          <label for="newBookTitle">
+            <span>Title:</span>
+            <input required type="text" id="newBookTitle" name="title" minLength="2" maxlength="200" />
+            <span class="error" aria-live="polite"></span>
+          </label>
         </div>
         <div class="form-item">
-          <label for="newBookAuthor">Author:</label>
-          <input required type="text" id="newBookAuthor" name="author" maxlength="70">
+          <label for="newBookAuthor">
+            <span>Author:</span>
+            <input required type="text" id="newBookAuthor" name="author" maxlength="70" pattern="[\w ]+">
+            <span class="error" aria-live="polite"></span>
+          </label>
         </div>
         <div class="form-item">
-          <label for="newBookPages">Pages:</label>
-          <input required type="number" id="newBookPages" name="pages" min="1" max="100000">
+          <label for="newBookPages">
+            <span>Pages:</span>
+            <input required type="text" id="newBookPages" name="pages" pattern="[1-9]\d{0,3}">
+            <span class="error" aria-live="polite"></span>
+          </label>
         </div>
         <div class="form-item-radio">
           <div>

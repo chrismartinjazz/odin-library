@@ -1,4 +1,4 @@
-import { formValidation } from "./formvalidation";
+// import { formValidation } from "./formvalidation";
 
 class Library {
   #books = [];
@@ -17,11 +17,9 @@ class Library {
 }
 
 class Book {
-  static maxInputLength = 80;
-
   constructor(title, author, pages, read) {
-    this.title = this.#limitStringLength(title, Book.maxInputLength);
-    this.author = this.#limitStringLength(author, Book.maxInputLength);
+    this.title = title;
+    this.author = author;
     this.pages = isNaN(parseInt(pages)) ? "" : parseInt(pages);
     this.read = read ? true : false;
   }
@@ -34,12 +32,6 @@ class Book {
 
   toggleRead() {
     this.read ? (this.read = false) : (this.read = true);
-  }
-
-  #limitStringLength(string, maxInputLength) {
-    return string.length > maxInputLength
-      ? string.slice(0, maxInputLength) + "..."
-      : string;
   }
 }
 

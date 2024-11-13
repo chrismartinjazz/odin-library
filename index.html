@@ -39,14 +39,14 @@
         <div class="form-item">
           <label for="newBookAuthor">
             <span>Author:</span>
-            <input required type="text" id="newBookAuthor" name="author" maxlength="70" pattern="[\w ]+">
+            <input required type="text" id="newBookAuthor" name="author" maxlength="70" pattern="[A-Za-z'\-. ]+">
             <span class="error" aria-live="polite"></span>
           </label>
         </div>
         <div class="form-item">
           <label for="newBookPages">
             <span>Pages:</span>
-            <input required type="text" id="newBookPages" name="pages" pattern="[1-9]\d{0,3}">
+            <input required type="text" id="newBookPages" name="pages" pattern="[1-9][0-9]\d{0,2}"> 
             <span class="error" aria-live="polite"></span>
           </label>
         </div>

@@ -120,6 +120,10 @@ dialog {
   border: none;
   background-color: var(--color-light);
   border-radius: 0.4em;
+  margin: 0;
+  transform: translateX(-50%);
+  left: 50%;
+  top: 20%;
 }
 
 fieldset {

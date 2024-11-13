@@ -103,7 +103,7 @@ class Display {
     });
 
     closeButton.addEventListener("click", () => {
-      this.form.reset();
+      this.#resetForm();
       this.dialog.close();
     });
   }
@@ -117,64 +117,41 @@ class Display {
     const pagesError = document.querySelector("#newBookPages + span.error");
     const read = document.querySelector('input[name="read"]:checked');
 
-    title.addEventListener("input", (event) => {
-      if (title.validity.valid) {
-        titleError.textContent = "";
-        titleError.className = "error";
-      } else {
-        this.showTextError(title, titleError, "Title");
-      }
-    });
-
-    author.addEventListener("input", (event) => {
-      if (author.validity.valid) {
-        authorError.textContent = "";
-        authorError.className = "error";
-      } else {
-        this.showTextError(
-          author,
-          authorError,
-          "Author",
-          "Only alphabetic and numeric characters allowed in author's name!"
-        );
-      }
-    });
-
-    pages.addEventListener("input", (event) => {
-      if (pages.validity.valid) {
-        pagesError.textContent = "";
-        pagesError.className = "error";
-      } else {
-        this.showTextError(
-          pages,
-          pagesError,
-          "Pages",
-          "Books in the library must have less than 10000 pages."
-        );
-      }
-    });
+    this.#initializeInputError(title, titleError, "Title");
+    this.#initializeInputError(
+      author,
+      authorError,
+      "Author",
+      "No numeric characters allowed in author's name!"
+    );
+    this.#initializeInputError(
+      pages,
+      pagesError,
+      "Pages",
+      "Books in the library must have more than 10, and less than 10000 pages."
+    );
 
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
       if (!title.validity.valid) {
-        this.showTextError(title, titleError, "Title");
+        this.#showTextError(title, titleError, "Title");
         return;
       }
       if (!author.validity.valid) {
-        this.showTextError(
+        this.#showTextError(
           author,
           authorError,
           "Author",
-          "Only alphabetic and numeric characters allowed in author's name."
+          "No numbers allowed in the author's name."
         );
         return;
       }
       if (!pages.validity.valid) {
-        this.showTextError(
+        this.#showTextError(
           pages,
           pagesError,
           "Pages",
-          "Books in the library must have less than 10000 pages."
+          "Books in the library must have more than 10, and less than 10000 pages."
         );
         return;
       }
@@ -187,20 +164,54 @@ class Display {
       );
       this.library.addBook(newBook);
       this.dialog.close();
-      this.form.reset();
+      this.#resetForm();
       this.displayBooks();
     });
   }
 
-  showTextError(textField, textError, fieldName, patternMismatchErrorString) {
+  #initializeInputError(input, inputError, inputName, regExValidationMessage) {
+    input.addEventListener("input", (event) => {
+      if (input.validity.valid) {
+        inputError.textContent = "";
+        inputError.className = "error";
+      } else {
+        this.#showTextError(
+          input,
+          inputError,
+          inputName,
+          regExValidationMessage
+        );
+      }
+    });
+  }
+
+  #showTextError(textField, textError, fieldName, patternMismatchErrorString) {
     if (textField.validity.valueMissing) {
       textError.textContent = `${fieldName} is required.`;
     } else if (textField.validity.tooShort) {
       textError.textContent = `${fieldName} should be at least ${textField.minLength} characters - you entered ${textField.value.length}.`;
     } else if (textField.validity.patternMismatch) {
+      if (isNaN(textField.value.slice(-1))) {
+        textField.value = textField.value.slice(0, -1);
+        return;
+      }
       textError.textContent = patternMismatchErrorString;
     }
     textError.className = "error active";
+  }
+
+  #resetForm() {
+    this.form.reset();
+    const titleError = document.querySelector("#newBookTitle + span.error");
+    const authorError = document.querySelector("#newBookAuthor + span.error");
+    const pagesError = document.querySelector("#newBookPages + span.error");
+
+    titleError.textContent = "";
+    titleError.className = "error";
+    authorError.textContent = "";
+    authorError.className = "error";
+    pagesError.textContent = "";
+    pagesError.className = "error";
   }
 }
 
